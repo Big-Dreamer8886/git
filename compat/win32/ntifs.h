@@ -1,6 +1,8 @@
 #ifndef _NTIFS_
 #define _NTIFS_
 
+#include <ntdef.h> /* for UNICODE_STRING */
+
 /*
  * Copy necessary structures and definitions out of the Windows DDK
  * to enable calling NtQueryDirectoryFile()
@@ -8,18 +10,6 @@
 
 typedef _Return_type_success_(return >= 0) LONG NTSTATUS;
 #define NT_SUCCESS(Status)  (((NTSTATUS)(Status)) >= 0)
-
-typedef struct _UNICODE_STRING {
-	USHORT Length;
-	USHORT MaximumLength;
-#ifdef MIDL_PASS
-	[size_is(MaximumLength / 2), length_is((Length) / 2)] USHORT * Buffer;
-#else // MIDL_PASS
-	_Field_size_bytes_part_(MaximumLength, Length) PWCH   Buffer;
-#endif // MIDL_PASS
-} UNICODE_STRING;
-typedef UNICODE_STRING *PUNICODE_STRING;
-typedef const UNICODE_STRING *PCUNICODE_STRING;
 
 typedef enum _FILE_INFORMATION_CLASS {
 	FileDirectoryInformation = 1,
